@@ -17,7 +17,7 @@ class smallTab extends StatelessWidget {
       child: PhysicalModel(
         color: Colors.transparent,
         shadowColor: Colors.black54,
-        elevation: 5,
+        elevation: 3,
         borderRadius: BorderRadius.circular(16),
         child: Container(
           width: 160,

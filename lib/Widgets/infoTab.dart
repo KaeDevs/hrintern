@@ -43,12 +43,15 @@ class infoTab extends StatelessWidget {
                           Text("Sample Location")
                         ],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.gps_fixed_rounded),
-                          Text("GPS Tracker")
-                        ],
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.gps_fixed_rounded),
+                            Text("GPS Tracker")
+                          ],
+                        ),
                       ),
                     ],
                   )),
