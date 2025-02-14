@@ -19,8 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      // home: SplashScreen(),
-      home: Testscreen(),
+      home: SplashScreen(),
+      // home: Intro(
+      //             padding: EdgeInsets.all(12),
+      //             borderRadius: const BorderRadius.all(Radius.circular(4)),
+      //             maskColor: const Color.fromRGBO(0, 0, 0, .9),
+      //             child: Baseofapp()),
       debugShowCheckedModeBanner: false,
     );
   }

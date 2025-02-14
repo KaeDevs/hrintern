@@ -44,7 +44,7 @@ class ViewAttendance extends StatelessWidget {
                         group: 'va',
                         onWidgetLoad: () {
                           
-                          checkAndShowRN(context,  'va');
+                          // checkAndShowRN(context,  'va');
                         },
                         builder: (context, key) => TopTab(
                           key: key,

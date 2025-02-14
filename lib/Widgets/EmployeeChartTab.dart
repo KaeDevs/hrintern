@@ -30,7 +30,7 @@ class Employeecharttab extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 4),
+            SizedBox(height: 4, width: 270,),
             Text(
               "Total Employees - 1",
               style: TextStyle(color: color, fontSize: 14),
@@ -44,7 +44,7 @@ class Employeecharttab extends StatelessWidget {
                     PieChartSectionData(
                       value: 1, // Active employees
                       color: color,
-                      radius: 40,
+                      radius: 30,
                       title: '1',
                       titleStyle: TextStyle(color: Colors.white, fontSize: 16),
                     ),

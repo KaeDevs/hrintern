@@ -1,168 +1,207 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:http/http.dart' as http;
-import 'package:in_app_update/in_app_update.dart';
 
-Future<void> showReleaseNotesDialog(
-  BuildContext context,
-) async {
+import 'package:flutter/material.dart';
+import 'package:ss/Widgets/EmployeeChartTab.dart';
+import 'package:ss/Widgets/attendanceCard.dart';
+
+class ReleaseNotesDialog extends StatefulWidget {
+  @override
+  _ReleaseNotesDialogState createState() => _ReleaseNotesDialogState();
+}
+
+class _ReleaseNotesDialogState extends State<ReleaseNotesDialog> {
+  bool isUpdateAvailable = false;
+  int tip_no = 1;
+  int max_pages = 3;
+
+  void increase_tip_no() {
+    if (tip_no != max_pages) {
+      setState(() {
+        tip_no += 1;
+      });
+    }
+  }
+
+  void decrease_tip_no() {
+    if (tip_no > 1) {
+      setState(() {
+        tip_no -= 1;
+      });
+    }
+  }
+
+  Widget now_content() {
+    switch (tip_no) {
+      case 1:
+        return content_release_notes(
+            headline: "What's New", info: "Welcome to the newly updated app");
+      case 2:
+        return content_release_notes(
+            headline: "All your Attendance on fingertips",
+            info: "Single view and access to all your Employee's attendance");
+      case 3:
+        return content_release_notes(
+            headline: "Quick View of Percentages",
+            info: "Graphical visualization of your data");
+      default:
+        return content_release_notes(
+            headline: "All your accounts on fingertips",
+            info: "Single view and access to all your accounts and balances");
+    }
+  }
+
+  Widget top_content() {
+    switch (tip_no) {
+      case 1:
+        return SizedBox(
+          height: 0,
+        );
+      case 2:
+        return attendanceCard(
+            title: "Today Attendance", icon: Icons.calendar_month_sharp);
+      case 3:
+        return Employeecharttab(
+          title: "Employees",
+          icon: Icons.person,
+          color: Colors.green,
+        );
+      default:
+        return Icon(
+          Icons.abc,
+          color: Colors.amber,
+          size: 10,
+        );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      backgroundColor: Colors.transparent,
+      elevation: 2,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Image at the top of the Dialog
+          top_content(),
+          SizedBox(
+            height: 20,
+          ),
+
+          IntrinsicWidth(
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.fromLTRB(5, 5, 10, 5),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 209, 209, 209),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.lightbulb_outline),
+                                Text("Quick Tip $tip_no/$max_pages")
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: Icon(Icons.close))
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [now_content()],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        tip_no == 1
+                            ? TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child:
+                                    Text("Skip", style: TextStyle(fontSize: 16)),
+                              )
+                            : TextButton(
+                                onPressed: decrease_tip_no,
+                                child: Text("Previous",
+                                    style: TextStyle(fontSize: 16)),
+                              ),
+                        tip_no == max_pages
+                            ? TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("Finish",
+                                    style: TextStyle(fontSize: 16)),
+                              )
+                            : TextButton(
+                                onPressed: increase_tip_no,
+                                child:
+                                    Text("Next", style: TextStyle(fontSize: 16)),
+                              )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Widget for displaying release note content
+class content_release_notes extends StatelessWidget {
+  final String headline;
+  final String info;
+
+  const content_release_notes({required this.headline, required this.info});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(headline,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        Text(info, style: TextStyle(fontSize: 16), textAlign: TextAlign.start),
+      ],
+    );
+  }
+}
+
+Future<void> showReleaseNotesDialog(BuildContext context) async {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        elevation: 2,
-        
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Stack(
-            children: [
-              // Positioned(child: Image.asset("name")),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(
-                              "assets/images/launch_logo.png",
-                              height: 48,
-                              width: 48,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Release Notes",
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "Version : 2.2",
-                              style: TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  SizedBox(
-                    height: 200,
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              """- Bug fixes and performance improvements\n- New Intro Screen to Guide new Users\n- Added Splash Screen\n- UI Enhancements""",
-                              style: TextStyle(fontSize: 16),
-                              textAlign: TextAlign.left,
-                            ),
-                            if (false)
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Text(
-                                  "A new version is available. Please update the app.",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (false)
-                        TextButton(
-                          onPressed: () async {
-                            final url = Uri.parse(
-                                "https://play.google.com/store/apps/details?id=your.package.name");
-                            if (await canLaunchUrl(url)) {
-                              launchUrl(url);
-                            }
-                          },
-                          child: Text(
-                            "UPDATE",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text("OK", style: TextStyle(fontSize: 16)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
+      return ReleaseNotesDialog();
     },
   );
-}
-
-Future<void> checkForUpdate() async {
-  AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
-
-  if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-    
-    print("Update Available: Version ${updateInfo.availableVersionCode}");
-  } else {
-    print("No update available.");
-  }
-}
-
-Future<void> startFlexibleUpdate() async {
-  AppUpdateInfo updateInfo = await InAppUpdate.checkForUpdate();
-
-  if (updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
-    await InAppUpdate.startFlexibleUpdate();
-
-    await InAppUpdate.completeFlexibleUpdate();
-  }
-}
-
-Future<String> getLatestVersionFromPlayStore() async {
-  final url =
-      "https://play.google.com/store/apps/details?id=com.hr.blusky&hl=en";
-  final response = await http.get(Uri.parse(url));
-
-  if (response.statusCode == 200) {
-    final regExp = RegExp(r'"softwareVersion":"([\d.]+)"');
-    final match = regExp.firstMatch(response.body);
-    if (match != null) {
-      print(match.group(1));
-      return match.group(1) ?? "0.0.0";
-    }
-  }
-  return "0.0.0";
 }
 
 void checkAndShowRN(BuildContext context, String grp) async {
@@ -171,13 +210,40 @@ void checkAndShowRN(BuildContext context, String grp) async {
 
   if (!hasShownRN) {
     await showReleaseNotesDialog(context);
-    if(grp != ''){
-    Intro.of(context).start(group: grp);
+    if (grp != '') {
+      Intro.of(context).start(group: grp);
+    } else {
+      Intro.of(context).start();
     }
-    else{
-    Intro.of(context).start();
+    await prefs.setBool("hasShownRN1", true);
+  }
+}
 
-    }
-    await prefs.setBool("hasShownRN", true);
+class content_realease_notes extends StatelessWidget {
+  String? Headline;
+  String? info;
+
+  content_realease_notes({this.Headline, this.info});
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          Headline!,
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          info!,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ],
+    );
   }
 }
