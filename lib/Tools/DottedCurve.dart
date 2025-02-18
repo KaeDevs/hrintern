@@ -26,7 +26,7 @@ class DottedLinePainter extends CustomPainter {
     // If the button is on the right side, adjust curve inward
     if (start.dx > end.dx) {
       control = Offset(
-        (start.dx + end.dx)- 400 ,
+        (start.dx - end.dx),
         (start.dy + end.dy) /2, // Flip curve downward
       );
     }

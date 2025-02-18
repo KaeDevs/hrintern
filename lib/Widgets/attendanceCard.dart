@@ -18,6 +18,7 @@ class attendanceCard extends StatelessWidget {
         
         borderRadius: BorderRadius.circular(5),
         child: Container(
+          
           // margin: EdgeInsets.all(10), // Adds spacing
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
@@ -36,14 +37,14 @@ class attendanceCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       icon,
                       size: 20,
                       color: Colors.blue,
                     ),
-                    SizedBox(height: 0),
+                    SizedBox(width: 20,),
                     Text(
                       title,
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

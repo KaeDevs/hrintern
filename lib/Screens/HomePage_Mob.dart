@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_intro/flutter_intro.dart';
+import 'package:get/get.dart';
+import 'package:ss/BaseOfAppDesk.dart';
+import 'package:ss/Screens/viewAttendanceDesk.dart';
+import 'package:ss/Screens/viewAttendanceMob.dart';
 import 'package:ss/Widgets/EmployeeChartTab.dart';
 import 'package:ss/Widgets/attendanceCard.dart';
 import 'package:ss/Widgets/cardButton.dart';
 
-class Homepage extends StatelessWidget {
-  const Homepage({super.key});
+class HomepageMob extends StatelessWidget {
+  const HomepageMob({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SafeArea(
-        
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0), // Adds spacing
@@ -24,7 +27,9 @@ class Homepage extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).pushNamed('/page2');
+                          Get.to(() => ViewAttendanceMob())
+                            
+                          ;
                         },
                         child: Cardbutton(
                           title: "View Attendance",
@@ -34,7 +39,9 @@ class Homepage extends StatelessWidget {
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(() =>ViewAttendanceMob());
+                        },
                         child: Cardbutton(
                           title: "Face Attendance",
                           icon: Icons.face_retouching_natural_sharp,

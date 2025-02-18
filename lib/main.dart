@@ -1,32 +1,61 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:ss/BaseOfApp.dart';
+import 'package:ss/BaseOfAppDesk.dart';
 import 'package:flutter_intro/flutter_intro.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:ss/BaseOfAppMob.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:ss/Screens/HomePage_Desk.dart';
+import 'package:ss/Screens/HomePage_Mob.dart';
+import 'package:ss/Screens/routes.dart';
 import 'package:ss/Screens/testScreen.dart';
+import 'package:get/get.dart';
+import 'package:ss/Screens/viewAttendanceDesk.dart';
 
 void main() {
-  runApp(MyApp());
+  usePathUrlStrategy();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  runApp(MyApp(navigatekey: navigatorKey,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GlobalKey<NavigatorState>? navigatekey;
+  const MyApp({this.navigatekey});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      
-      title: 'Splash Screen',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: SplashScreen(),
-      // home: Intro(
-      //             padding: EdgeInsets.all(12),
-      //             borderRadius: const BorderRadius.all(Radius.circular(4)),
-      //             maskColor: const Color.fromRGBO(0, 0, 0, .9),
-      //             child: Baseofapp()),
-      debugShowCheckedModeBanner: false,
-    );
+    return 
+        Builder(builder: (context) =>
+    Intro(
+        padding: EdgeInsets.all(12),
+        borderRadius: const BorderRadius.all(Radius.circular(4)),
+        maskColor: const Color.fromRGBO(0, 0, 0, .9),
+        child: 
+          GetMaterialApp(
+            initialRoute: '/',
+            
+            getPages: [
+              GetPage(name: '/', page: () => SplashScreen()),
+              GetPage(
+                  name: '/base',
+                  page: () => BaseofappDesk(
+                        body: HomepageDesk(),
+                      )),
+              GetPage(name: '/home', page: () => HomepageDesk()),
+              // GetPage(name: '/viewatt', page: () => ViewAttendance()),
+            ],
+            navigatorKey: navigatekey!,
+            title: 'Splash Screen',
+            theme: ThemeData(
+              primarySwatch: Colors.green,
+            ),
+            
+            debugShowCheckedModeBanner: false,
+          
+          ),
+        )
+        )
+        ;
   }
 }
 
@@ -101,20 +130,31 @@ class _SplashScreen extends State<SplashScreen> with TickerProviderStateMixin {
         _fadeController.forward();
 
         Future.delayed(Duration(seconds: 2), () {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              transitionDuration: Duration(milliseconds: 1500),
-              pageBuilder: (_, __, ___) => Intro(
+          if (MediaQuery.of(context).size.width < 600) {
+            Get.offAll(() => Intro(
+                padding: EdgeInsets.all(12),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                maskColor: const Color.fromRGBO(0, 0, 0, .8),
+                child: BaseofappMob(
+                  body: HomepageMob(),
+                )));
+          } else {
+              Get.offAll(() => Intro(
                   padding: EdgeInsets.all(12),
                   borderRadius: const BorderRadius.all(Radius.circular(4)),
                   maskColor: const Color.fromRGBO(0, 0, 0, .8),
-                  child: Baseofapp()),
-              transitionsBuilder: (_, animation, __, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-            ),
-          );
+                  child: BaseofappDesk(
+                    body: 
+                    Intro(
+                  padding: EdgeInsets.all(12),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  maskColor: const Color.fromRGBO(0, 0, 0, .8),
+                  child:HomepageDesk(),)
+                  )));
+            }
+          // transitionsBuilder: (_, animation, __, child) {
+          //   return FadeTransition(opacity: animation, child: child);
+          // },
         });
       });
     });

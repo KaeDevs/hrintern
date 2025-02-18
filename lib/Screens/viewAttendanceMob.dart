@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_intro/flutter_intro.dart';
+import 'package:ss/Tools/DottedCurve.dart';
 import 'package:ss/Widgets/infoTab.dart';
 import 'package:ss/Widgets/showRelaseNotesDialog.dart';
 import 'package:ss/Widgets/smallTab.dart';
 import 'package:ss/Widgets/topTab.dart';
 
-class ViewAttendance extends StatelessWidget {
-  final Key? key;
+class ViewAttendanceMob extends StatelessWidget {
+  // final Key? key;
 
-  ViewAttendance({
-    this.key,
-  });
+  // ViewAttendance({
+  //   // this.key,
+  // });
   
   
 
@@ -44,13 +45,111 @@ class ViewAttendance extends StatelessWidget {
                         group: 'va',
                         onWidgetLoad: () {
                           
-                          // checkAndShowRN(context,  'va');
+                          // Intro.of(context).start(group: 'va');
+                          checkAndShowRN(context, 'va');
                         },
                         builder: (context, key) => TopTab(
                           key: key,
                         ),
                         order: 1,
                         padding: EdgeInsets.all(0),
+                        getOverlayPosition: ({
+                required Offset offset,
+                required Size screenSize,
+                required Size size,
+              }) {
+                return OverlayPosition(
+                  top: size.height + offset.dy,
+                  width: screenSize.width,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                );
+              },
+              overlayBuilder: (params) {
+                return Stack(
+                  children: [
+                    // Background Color
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      color: Colors.transparent // Semi-transparent overlay
+                    ),
+                    Positioned.fill(
+                      child: CustomPaint(
+                        painter: DottedLinePainter(
+                            start: Offset(
+                                params.offset!.dx + params.size.width / 2 + 20,
+                                params.offset!.dy - 35),
+                            end: Offset(MediaQuery.of(context).size.width / 2,
+                                MediaQuery.of(context).size.height * 0.43),
+                            // curve: Offset(
+                            //     params.offset!.dx +
+                            //         params.size.width / 2 +
+                            //         20 +
+                            //         MediaQuery.of(context).size.width / 2,
+                            //     (params.offset!.dy -
+                            //                 35 +
+                            //                 MediaQuery.of(context).size.height *
+                            //                     0.43) /
+                            //             2 -
+                            //         50)
+                                    ),
+                      ),
+                    ),
+                    // Centered Content
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24), // Add padding
+                          child: Column(
+                            mainAxisSize:
+                                MainAxisSize.max, // Shrink to fit content
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment:
+                                MainAxisAlignment.center, // Center horizontally
+                            children: [
+                              // Text in the center
+                              Text(
+                                "You can Filter the results using this Button!",
+                                textAlign: TextAlign.center, // Center text
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(
+                                  height:
+                                      20), // Spacing between text and button
+
+                              // Next Button (Properly Styled)
+                              IntroButton(
+                                fontSize: 17,
+                                text: "Finish",
+                                onPressed:
+                                    params.onFinish, // Call function properly
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(
+                                      255, 0, 0, 0), // Button color
+                                  foregroundColor: Colors.teal, // Text color
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 12),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        10), // Rounded corners
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
                       )
                     ],
                   ),
