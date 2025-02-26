@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_intro/flutter_intro.dart';
 import 'package:get/get.dart';
-import 'package:responsive_builder/responsive_builder.dart';
-import 'package:ss/Screens/HomePage_Desk.dart';
-import 'package:ss/Screens/viewAttendanceDesk.dart';
-import 'package:ss/Tools/DottedCurve.dart';
+import 'package:ss/Screens/cameraScreen.dart';
+import 'package:ss/Tools/dottedCurve.dart';
 import 'package:ss/Widgets/showRelaseNotesDialog.dart';
 
 class BaseofappMob extends StatelessWidget {
-  final Key? key;
+  
   Widget? body;
-  BaseofappMob({this.key, required this.body});
+  BaseofappMob({super.key,  required this.body});
 
   String currentScreen = "HOME";
 
@@ -155,7 +153,7 @@ class BaseofappMob extends StatelessWidget {
                         ),
                       ),
                       // Centered Content
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
                         child: Center(
@@ -223,7 +221,9 @@ class BaseofappMob extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed("/camm");
+                    },
                     icon: Icon(Icons.search),
                     color: Colors.white,
                   ),
@@ -345,7 +345,7 @@ class BaseofappMob extends StatelessWidget {
                               ),
                             ),
                             // Centered Content
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height,
                               child: Center(

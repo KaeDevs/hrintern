@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:ss/Screens/HomePage_Desk.dart';
 import 'package:ss/Screens/viewAttendanceDesk.dart';
-import 'package:ss/Tools/DottedCurve.dart';
+import 'package:ss/Tools/dottedCurve.dart';
 import 'package:ss/Widgets/showRelaseNotesDialog.dart';
 
 
@@ -23,13 +23,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           
           elevation: 0,
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // IconButton(onPressed: () => Get.toNamed("/homed"), icon: Icon(Icons.arrow_back_sharp),),
               IntroStepBuilder(
                 text: "You can access the menu bar here to change setting!",
                 order: 2,

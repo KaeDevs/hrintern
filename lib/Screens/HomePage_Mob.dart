@@ -27,9 +27,9 @@ class HomepageMob extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          Get.to(() => ViewAttendanceMob())
+                          Get.toNamed("/viewm");
                             
-                          ;
+                          
                         },
                         child: Cardbutton(
                           title: "View Attendance",

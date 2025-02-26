@@ -1,26 +1,36 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ss/BaseOfAppDesk.dart';
 import 'package:flutter_intro/flutter_intro.dart';
-import 'package:responsive_builder/responsive_builder.dart';
 import 'package:ss/BaseOfAppMob.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:ss/Screens/CameraScreen.dart';
 import 'package:ss/Screens/HomePage_Desk.dart';
 import 'package:ss/Screens/HomePage_Mob.dart';
-import 'package:ss/Screens/routes.dart';
-import 'package:ss/Screens/testScreen.dart';
 import 'package:get/get.dart';
+import 'package:ss/Screens/ReleaseNotesDesk.dart';
+import 'package:ss/Screens/cameraScreenDesk.dart';
 import 'package:ss/Screens/viewAttendanceDesk.dart';
+import 'package:ss/Screens/viewAttendanceMob.dart';
 
-void main() {
+
+void main() async {
   usePathUrlStrategy();
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure Flutter bindings are initialized
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // Lock to portrait mode
+  ]);
+
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  runApp(MyApp(navigatekey: navigatorKey,));
+
+  runApp(MyApp(navigatekey: navigatorKey));
 }
 
 class MyApp extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatekey;
-  const MyApp({this.navigatekey});
+  const MyApp({super.key, this.navigatekey});
 
   @override
   Widget build(BuildContext context) {
@@ -36,16 +46,40 @@ class MyApp extends StatelessWidget {
             
             getPages: [
               GetPage(name: '/', page: () => SplashScreen()),
+              GetPage(name: '/camm', page: () => CameraScreen()),
+              GetPage(name: '/camd', page: () => CameraScreenDesk()),
+              GetPage(name: '/RLNotes', page: () => Releasenotesdesk()),
+              
               GetPage(
-                  name: '/base',
-                  page: () => BaseofappDesk(
-                        body: HomepageDesk(),
-                      )),
-              GetPage(name: '/home', page: () => HomepageDesk()),
+                  name: '/viewd',
+                  page: () => SizedBox(child: ViewAttendanceDesk())),
+              GetPage(
+                  name: '/viewm',
+                  page: () => SizedBox(child: ViewAttendanceMob())),
+              GetPage(name: '/homem', page: () => Intro(
+                padding: EdgeInsets.all(12),
+                borderRadius: const BorderRadius.all(Radius.circular(4)),
+                maskColor: const Color.fromRGBO(0, 0, 0, .8),
+                child: BaseofappMob(
+                  body: HomepageMob(),
+                ))),
+              GetPage(name: '/homed', page: () => Intro(
+                  padding: EdgeInsets.all(12),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  maskColor: const Color.fromRGBO(0, 0, 0, .8),
+                  child: BaseofappDesk(
+                    body: 
+                    Intro(
+                  padding: EdgeInsets.all(12),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  maskColor: const Color.fromRGBO(0, 0, 0, .8),
+                  child:HomepageDesk(),)
+                  ))),
+              
               // GetPage(name: '/viewatt', page: () => ViewAttendance()),
             ],
             navigatorKey: navigatekey!,
-            title: 'Splash Screen',
+            title: 'Hr Intern',
             theme: ThemeData(
               primarySwatch: Colors.green,
             ),
@@ -131,26 +165,9 @@ class _SplashScreen extends State<SplashScreen> with TickerProviderStateMixin {
 
         Future.delayed(Duration(seconds: 2), () {
           if (MediaQuery.of(context).size.width < 600) {
-            Get.offAll(() => Intro(
-                padding: EdgeInsets.all(12),
-                borderRadius: const BorderRadius.all(Radius.circular(4)),
-                maskColor: const Color.fromRGBO(0, 0, 0, .8),
-                child: BaseofappMob(
-                  body: HomepageMob(),
-                )));
+            Get.offAllNamed("/homem");
           } else {
-              Get.offAll(() => Intro(
-                  padding: EdgeInsets.all(12),
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                  maskColor: const Color.fromRGBO(0, 0, 0, .8),
-                  child: BaseofappDesk(
-                    body: 
-                    Intro(
-                  padding: EdgeInsets.all(12),
-                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                  maskColor: const Color.fromRGBO(0, 0, 0, .8),
-                  child:HomepageDesk(),)
-                  )));
+              Get.offAllNamed("/homed");
             }
           // transitionsBuilder: (_, animation, __, child) {
           //   return FadeTransition(opacity: animation, child: child);
@@ -172,34 +189,37 @@ class _SplashScreen extends State<SplashScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FadeTransition(
-              opacity: _fadeIntroAnimation,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                child: SlideTransition(
-                  position: _slideAnimation,
-                  child: Image.asset("assets/images/launch_logo.png",
-                      height: 80, width: 80),
+      body: Container(
+        
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FadeTransition(
+                opacity: _fadeIntroAnimation,
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: Image.asset("assets/images/launch_logo.png",
+                        height: 80, width: 80),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 30),
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: Text(
-                "HrBlueSky",
-                style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                    fontFamily: "H1"),
+              SizedBox(height: 30),
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: Text(
+                  "HrBlueSky",
+                  style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontFamily: "H1"),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

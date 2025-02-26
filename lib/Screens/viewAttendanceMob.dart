@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_intro/flutter_intro.dart';
-import 'package:ss/Tools/DottedCurve.dart';
+import 'package:ss/Tools/dottedCurve.dart';
 import 'package:ss/Widgets/infoTab.dart';
 import 'package:ss/Widgets/showRelaseNotesDialog.dart';
 import 'package:ss/Widgets/smallTab.dart';

@@ -140,6 +140,11 @@ class ReleaseNotesDialog extends StatelessWidget {
                                   child: Text("Previous",
                                       style: TextStyle(fontSize: 16)),
                                 )),
+                          TextButton(
+                                  onPressed: (){_showMyDialog(context);},
+                                  child: Text("Alert Dialog",
+                                      style: TextStyle(fontSize: 16)),
+                                ),
                           Obx(() => noteController.tip_no.value ==
                                   noteController.max_pages.value
                               ? TextButton(
@@ -239,4 +244,35 @@ class content_realease_notes extends StatelessWidget {
       ],
     );
   }
+}
+
+
+Future<void> _showMyDialog(BuildContext context) async {
+  
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('AlertDialog '),
+        content: const SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('This is a alert dialog.'),
+              // Text('Would you like to approve of this message?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Ok'),
+            onPressed: () {
+              // Navigator.of(context).pop();
+              Get.back();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
